@@ -52,11 +52,12 @@ function* registerLocalSaga({ payload }) {
   yield put(loading(false));
 }
 
-function* loginSocial() {
+function* loginSocial({ payload }) {
+ 
   try {
     yield put(loading(true));
     yield put(authError(null));
-    let response = yield call(AuthRepository.signInWithGoogle);
+    let response = yield call(AuthRepository.socialSignIn, payload);
 
     yield put(loginSuccess({ user: response }));
     alert("Login  successfully!");

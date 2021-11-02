@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+
 import Input from "../../components/Input";
 import Loading from "../../components/loading/loading";
 import { registerLocal, socialLogin } from "../../redux/auth/actions";
@@ -12,6 +13,7 @@ function Login() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector(({ auth }) => auth);
   const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
@@ -25,8 +27,9 @@ function Login() {
   };
 
   const handleSocialLogin = () => {
-    dispatch(socialLogin());
+    dispatch(socialLogin("google"));
   };
+
   return (
     <div className="h-100 d-flex align-items-center justify-content-center">
       {loading && <Loading />}
@@ -59,7 +62,6 @@ function Login() {
             <button type="submit m-auto" className="btn btn-primary">
               Submit
             </button>
-
             {error && (
               <div className="alert alert-danger" role="alert">
                 {error}

@@ -1,13 +1,12 @@
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
 
 import Profile from "../../components/profile";
 import Layout from "../../layout";
 import { logOut } from "../../redux/auth/actions";
 
 function Index({ dispatch, user }) {
-  const { name, email, authProvider } = user;
-  const history = useHistory();
+  const { name, email } = user;
+ 
   async function handleLogout() {
     dispatch(logOut());
   }

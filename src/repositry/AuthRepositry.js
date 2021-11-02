@@ -1,9 +1,14 @@
 import { googleProvider, auth, db } from "../firebaseconfig";
 
+const availabelProviders = {
+  google: googleProvider,
+};
+
 class AuthRepository {
-  signInWithGoogle = async () => {
+  
+  socialSignIn = async (provider) => {
     try {
-      const res = await auth.signInWithPopup(googleProvider);
+      const res = await auth.signInWithPopup(availabelProviders[provider]);
       const user = res.user;
       const query = await db
         .collection("users")
@@ -14,11 +19,10 @@ class AuthRepository {
         const savedData = await db.collection("users").add({
           uid: user.uid,
           name: user.displayName,
-          authProvider: "google",
+          authProvider: provider,
           email: user.email,
         });
         userData = (await savedData.get()).data();
-      
       }
       return userData;
     } catch (err) {
@@ -39,9 +43,9 @@ class AuthRepository {
         authProvider: "local",
         email,
       });
-     
+
       const temp = await (await data.get()).data();
-     
+
       return temp;
     } catch (err) {
       throw err.message;
