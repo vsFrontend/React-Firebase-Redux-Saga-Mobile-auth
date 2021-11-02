@@ -5,7 +5,7 @@ const availabelProviders = {
 };
 
 class AuthRepository {
-  
+
   socialSignIn = async (provider) => {
     try {
       const res = await auth.signInWithPopup(availabelProviders[provider]);
@@ -44,9 +44,9 @@ class AuthRepository {
         email,
       });
 
-      const temp = await (await data.get()).data();
+      const userData = await (await data.get()).data();
 
-      return temp;
+      return userData;
     } catch (err) {
       throw err.message;
     }

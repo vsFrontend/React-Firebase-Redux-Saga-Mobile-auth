@@ -7,9 +7,12 @@ import Loading from "../../components/loading/loading";
 import { registerLocal, socialLogin } from "../../redux/auth/actions";
 
 function Login() {
-  const [name, setname] = useState("");
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+  const [formValues, setFormValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
   const dispatch = useDispatch();
   const { loading, error } = useSelector(({ auth }) => auth);
   const history = useHistory();
@@ -18,7 +21,7 @@ function Login() {
     e.preventDefault();
     dispatch(
       registerLocal({
-        data: { name, email, password },
+        data: formValues,
         callback: () => {
           history.push("/");
         },
@@ -40,23 +43,25 @@ function Login() {
             <Input
               type="string"
               label="Name"
-              value={name}
-              setValue={setname}
+              value={formValues.name}
+              setValue={(val) => setFormValues({ ...formValues, name: val })}
               required
             />
             <Input
               type="email"
               required
               label="Email"
-              value={email}
-              setValue={setemail}
+              value={formValues.email}
+              setValue={(val) => setFormValues({ ...formValues, email: val })}
             />
             <Input
               type="password"
               label="Password"
               className="form-control"
-              value={password}
-              setValue={setpassword}
+              value={formValues.password}
+              setValue={(val) =>
+                setFormValues({ ...formValues, password: val })
+              }
               required
             />
             <button type="submit m-auto" className="btn btn-primary">

@@ -14,8 +14,8 @@ function* loginSaga(data) {
   try {
     yield put(loading(true));
     yield put(authError(null));
-    const data1 = yield AuthRepository.logInWithEmailAndPassword(data.payload);
-    yield put(loginSuccess(data1));
+    const userData = yield AuthRepository.logInWithEmailAndPassword(data.payload);
+    yield put(loginSuccess(userData));
     alert("Login Successfully.");
   } catch (err) {
     yield put(authError(err));
