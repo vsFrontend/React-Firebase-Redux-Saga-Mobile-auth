@@ -7,11 +7,11 @@ import { phoneLogin } from "../../redux/auth/actions";
 
 const PhoneLogin = () => {
   // Inputs
-  const [mynumber, setnumber] = useState("+923248473417");
+  const [mynumber, setnumber] = useState("+923");
   const [otp, setotp] = useState("");
   const [step, setStep] = useState(0);
   const [final, setfinal] = useState("");
-  const [name, setName] = useState("Bilal");
+  const [name, setName] = useState("");
 
   const dispatch = useDispatch();
 
