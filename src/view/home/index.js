@@ -16,11 +16,6 @@ function Index({ dispatch, user }) {
       <div className="container">
         <Profile name={name} email={email} phone={phone} />
       </div>
-      <div className="w-100 text-center mt-2">
-        <button className="btn" variant="link" onClick={handleLogout}>
-          Log Out
-        </button>
-      </div>
     </Layout>
   );
 }

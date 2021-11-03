@@ -30,14 +30,14 @@ function Login() {
   };
 
   return (
-    <div className="h-100 d-flex align-items-center justify-content-center">
+    <div className="row justify-content-center">
       {loading && <Loading />}
-      <div className="card d-flex flex-column align-items-center">
+      <div className="card col-sm-5 col-12 ">
         <div className="card-body">
           <h1>Login</h1>
           <form onSubmit={handleLocalLogin}>
             <Input
-              type="text"
+              type="email"
               label="Email"
               value={inputStates.email}
               setValue={(val) =>
@@ -65,7 +65,10 @@ function Login() {
               Login
             </button>
           </form>
-          <Link className="btn " to="/signup"> Or Register</Link>
+          <Link className="btn " to="/signup">
+            {" "}
+            Or Register
+          </Link>
           <hr />
           <button
             className="btn btn-outline-warning w-100  "
