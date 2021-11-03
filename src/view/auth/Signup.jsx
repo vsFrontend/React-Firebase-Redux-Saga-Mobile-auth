@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 import Input from "../../components/Input";
 import Loading from "../../components/loading/loading";
@@ -73,6 +74,7 @@ function Login() {
               </div>
             )}
           </form>
+          <Link className="btn " to="/login"> Or Login</Link>
           <hr />
           <div className="d-flex justify-content-center">
             <button className="btn btn-info" onClick={handleSocialLogin}>

@@ -1,11 +1,10 @@
-import { googleProvider, auth, db } from "../firebaseconfig";
+import { googleProvider, phoneProvider, auth, db } from "../firebaseconfig";
 
 const availabelProviders = {
   google: googleProvider,
 };
 
 class AuthRepository {
-
   socialSignIn = async (provider) => {
     try {
       const res = await auth.signInWithPopup(availabelProviders[provider]);
@@ -24,6 +23,31 @@ class AuthRepository {
         });
         userData = (await savedData.get()).data();
       }
+      return userData;
+    } catch (err) {
+      console.error(err);
+      throw err.message;
+    }
+  };
+
+  phoneSignIn = async (user) => {
+    try {
+      const query = await db
+        .collection("users")
+        .where("phone", "==", user.phone)
+        .get();
+
+      let userData = query.docs[0]?.data();
+      if (query.docs.length === 0) {
+        const savedData = await db.collection("users").add({
+          name: user.name,
+          authProvider: "phone",
+          phone: user.phone,
+        });
+
+        userData = (await savedData.get()).data();
+      }
+
       return userData;
     } catch (err) {
       console.error(err);

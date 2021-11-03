@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
+import { phoneProvider } from "../../firebaseconfig";
+
 import Input from "../../components/Input";
 import Loading from "../../components/loading/loading";
 import { login, socialLogin } from "../../redux/auth/actions";
+import PhoneLogin from "../../components/phoneLogin";
 
 function Login() {
   const [inputStates, setInputStates] = useState({ email: "", password: "" });
@@ -17,9 +20,10 @@ function Login() {
     if (user) history.push("/");
   }, [user]);
 
-  const handleSocialLogin = () => {
-    dispatch(socialLogin("google"));
+  const handleSocialLogin = (provider) => {
+    dispatch(socialLogin(provider));
   };
+
   const handleLocalLogin = (e) => {
     e.preventDefault();
     dispatch(login(inputStates));
@@ -57,17 +61,19 @@ function Login() {
                 {error}
               </div>
             )}
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-outline-primary w-100">
               Login
             </button>
           </form>
+          <Link className="btn " to="/signup"> Or Register</Link>
           <hr />
-          <button className="btn btn-info" onClick={handleSocialLogin}>
+          <button
+            className="btn btn-outline-warning w-100  "
+            onClick={() => handleSocialLogin("google")}
+          >
             Login with Google
           </button>
-          <div>
-            Don't have an account? <Link to="/signup">Register</Link> now.
-          </div>
+          <PhoneLogin />
         </div>
       </div>
     </div>

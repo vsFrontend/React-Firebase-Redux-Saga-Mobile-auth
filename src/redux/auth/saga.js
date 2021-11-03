@@ -14,7 +14,9 @@ function* loginSaga(data) {
   try {
     yield put(loading(true));
     yield put(authError(null));
-    const userData = yield AuthRepository.logInWithEmailAndPassword(data.payload);
+    const userData = yield AuthRepository.logInWithEmailAndPassword(
+      data.payload
+    );
     yield put(loginSuccess(userData));
     alert("Login Successfully.");
   } catch (err) {
@@ -53,7 +55,6 @@ function* registerLocalSaga({ payload }) {
 }
 
 function* loginSocial({ payload }) {
- 
   try {
     yield put(loading(true));
     yield put(authError(null));
@@ -68,9 +69,24 @@ function* loginSocial({ payload }) {
   yield put(loading(false));
 }
 
+function* phoneSignIn({ payload }) {
+  try {
+    yield put(loading(true));
+    yield put(authError(null));
+    let response = yield call(AuthRepository.phoneSignIn, payload);
+    yield put(loginSuccess({ user: response }));
+    alert("Login  successfully!");
+  } catch (err) {
+    alert("Unable to Login Please Try Again !");
+    yield put(authError("Unable to Login Please Try Again !"));
+  }
+  yield put(loading(false));
+}
+
 export default function* rootSaga() {
   yield all([takeEvery(actionTypes.LOGIN_REQUEST, loginSaga)]);
   yield all([takeEvery(actionTypes.LOGOUT, logOutSaga)]);
   yield all([takeEvery(actionTypes.REGISTER_LOCAL, registerLocalSaga)]);
   yield all([takeEvery(actionTypes.SOCIAL_LOGIN, loginSocial)]);
+  yield all([takeEvery(actionTypes.PHONE_LOGIN, phoneSignIn)]);
 }

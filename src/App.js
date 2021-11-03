@@ -1,7 +1,10 @@
 import CustomRouter from "./router";
-
 function App() {
-  return <CustomRouter />;
+  return (
+    <>
+      <CustomRouter />
+    </>
+  );
 }
 
 export default App;

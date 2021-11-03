@@ -5,8 +5,8 @@ import Layout from "../../layout";
 import { logOut } from "../../redux/auth/actions";
 
 function Index({ dispatch, user }) {
-  const { name, email } = user;
- 
+  const { name, email, phone } = user;
+
   async function handleLogout() {
     dispatch(logOut());
   }
@@ -14,7 +14,7 @@ function Index({ dispatch, user }) {
   return (
     <Layout>
       <div className="container">
-        <Profile name={name} email={email} />
+        <Profile name={name} email={email} phone={phone} />
       </div>
       <div className="w-100 text-center mt-2">
         <button className="btn" variant="link" onClick={handleLogout}>
