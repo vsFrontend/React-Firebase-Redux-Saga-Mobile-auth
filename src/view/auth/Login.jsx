@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
-import { phoneProvider } from "../../firebaseconfig";
-
 import Input from "../../components/Input";
 import Loading from "../../components/loading/loading";
 import { login, socialLogin } from "../../redux/auth/actions";
@@ -18,7 +16,7 @@ function Login() {
 
   useEffect(() => {
     if (user) history.push("/");
-  }, [user]);
+  }, [user, history]);
 
   const handleSocialLogin = (provider) => {
     dispatch(socialLogin(provider));

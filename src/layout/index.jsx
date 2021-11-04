@@ -18,7 +18,6 @@ function Layout({ children }) {
           <Navbar.Collapse className="justify-content-end">
             <Button
               variant="light"
-              // variant="link"
               onClick={handleLogout}
             >
               Log Out
@@ -26,14 +25,7 @@ function Layout({ children }) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {/* <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container-fluid">
-          <span className="navbar-brand" href="#">
-            Firebase Saga
-          </span>
-        </div>
-       
-      </nav> */}
+
       <div className="w-100 h-100">{children}</div>
     </>
   );

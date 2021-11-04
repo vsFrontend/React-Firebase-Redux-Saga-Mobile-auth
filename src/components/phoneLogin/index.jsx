@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../Input";
 
 import { Button, Modal } from "react-bootstrap";
 
-// import { firebase, auth } from "./firebase";
 import { auth, firebase } from "../../firebaseconfig";
 import { useDispatch } from "react-redux";
 import { phoneLogin } from "../../redux/auth/actions";
-// import {ForceR}
+
+const steps = {
+  modal: "modalClose",
+  phoneNo: "phoneNo",
+  verifyCode: "verifyCode",
+};
+
 const PhoneLogin = () => {
   // Inputs
+  const [step, setStep] = useState(steps.modal);
   const [mynumber, setnumber] = useState("+923");
-  const [otp, setotp] = useState("");
-  const [step, setStep] = useState(0);
-  const [final, setfinal] = useState("");
+  const [otp, setOtp] = useState("");
+  const [final, setFinal] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -24,14 +29,15 @@ const PhoneLogin = () => {
   };
 
   useEffect(() => {
-    if (step === 0) {
+    if (step === steps.modal) {
       setLoading(false);
       setName("");
       setnumber("+923");
     }
   }, [step]);
+
   // Sent OTP
-  const signin = (e) => {
+  const handleSignInWithPhone = (e) => {
     e.preventDefault();
     if (mynumber === "" || mynumber.length < 10 || loading) return;
     let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container");
@@ -39,19 +45,18 @@ const PhoneLogin = () => {
     auth
       .signInWithPhoneNumber(mynumber, verify)
       .then((result) => {
-        setfinal(result);
+        setFinal(result);
         alert("code sent");
-        setStep(2);
+        setStep(steps.verifyCode);
       })
       .catch((err) => {
         alert(err);
-        // window.location.reload();
         setLoading(false);
       });
   };
 
   // Validate OTP
-  const ValidateOtp = () => {
+  const validateOtp = () => {
     if (otp === null || final === null) return;
     final
       .confirm(otp)
@@ -69,9 +74,9 @@ const PhoneLogin = () => {
 
   const renderView = () => {
     switch (step) {
-      case 1:
+      case steps.phoneNo:
         return (
-          <form onSubmit={signin}>
+          <form onSubmit={handleSignInWithPhone}>
             <Input
               required
               label="Name"
@@ -92,18 +97,18 @@ const PhoneLogin = () => {
             </button>
           </form>
         );
-      case 2:
+      case steps.verifyCode:
         return (
           <div>
             <Input
               type="text"
               placeholder={"Enter your OTP"}
               value={otp}
-              setValue={setotp}
+              setValue={setOtp}
             />
             <button
               className="btn btn-outline-success w-100"
-              onClick={ValidateOtp}
+              onClick={validateOtp}
             >
               Verify
             </button>
@@ -120,12 +125,12 @@ const PhoneLogin = () => {
       <Button
         className=" my-2  w-100"
         variant="outline-success"
-        onClick={() => setStep(1)}
+        onClick={() => setStep(steps.phoneNo)}
         block
       >
         Login with Phone
       </Button>
-      <Modal show={step !== 0} onHide={() => setStep(0)}>
+      <Modal show={step !== steps.modal} onHide={() => setStep(steps.modal)}>
         <Modal.Header closeButton>
           <Modal.Title>Mobile Login</Modal.Title>
         </Modal.Header>

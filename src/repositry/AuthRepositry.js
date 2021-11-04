@@ -1,4 +1,4 @@
-import { googleProvider, phoneProvider, auth, db } from "../firebaseconfig";
+import { googleProvider, auth, db } from "../firebaseconfig";
 
 const availabelProviders = {
   google: googleProvider,
