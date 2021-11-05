@@ -1,9 +1,13 @@
 import { googleProvider, auth, db } from "../firebaseconfig";
 
+const availabelProviders = {
+  google: googleProvider,
+};
+
 class AuthRepository {
-  signInWithGoogle = async () => {
+  socialSignIn = async (provider) => {
     try {
-      const res = await auth.signInWithPopup(googleProvider);
+      const res = await auth.signInWithPopup(availabelProviders[provider]);
       const user = res.user;
       const query = await db
         .collection("users")
@@ -14,12 +18,36 @@ class AuthRepository {
         const savedData = await db.collection("users").add({
           uid: user.uid,
           name: user.displayName,
-          authProvider: "google",
+          authProvider: provider,
           email: user.email,
         });
         userData = (await savedData.get()).data();
-      
       }
+      return userData;
+    } catch (err) {
+      console.error(err);
+      throw err.message;
+    }
+  };
+
+  phoneSignIn = async (user) => {
+    try {
+      const query = await db
+        .collection("users")
+        .where("phone", "==", user.phone)
+        .get();
+
+      let userData = query.docs[0]?.data();
+      if (query.docs.length === 0) {
+        const savedData = await db.collection("users").add({
+          name: user.name,
+          authProvider: "phone",
+          phone: user.phone,
+        });
+
+        userData = (await savedData.get()).data();
+      }
+
       return userData;
     } catch (err) {
       console.error(err);
@@ -39,10 +67,10 @@ class AuthRepository {
         authProvider: "local",
         email,
       });
-     
-      const temp = await (await data.get()).data();
-     
-      return temp;
+
+      const userData = await (await data.get()).data();
+
+      return userData;
     } catch (err) {
       throw err.message;
     }

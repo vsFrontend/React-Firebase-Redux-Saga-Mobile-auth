@@ -8,6 +8,7 @@ export const actionTypes = {
   AUTH_ERROR: "AUTH_ERROR",
   REGISTER_LOCAL: "REGISTER_LOCAL",
   SOCIAL_LOGIN: "SOCIAL_LOGIN",
+  PHONE_LOGIN: "PHONE_LOGIN",
 };
 
 export function loading(payload) {
@@ -39,4 +40,8 @@ export function registerLocal(payload) {
 
 export function socialLogin(payload) {
   return { type: actionTypes.SOCIAL_LOGIN, payload };
+}
+
+export function phoneLogin(payload) {
+  return { type: actionTypes.PHONE_LOGIN, payload };
 }

@@ -1,51 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-// import {  } from "./firebase";
+
 import Input from "../../components/Input";
 import Loading from "../../components/loading/loading";
 import { login, socialLogin } from "../../redux/auth/actions";
+import PhoneLogin from "../../components/phoneLogin";
+
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [inputStates, setInputStates] = useState({ email: "", password: "" });
+
   const history = useHistory();
   const { loading, error, user } = useSelector(({ auth }) => auth);
   const dispatch = useDispatch();
 
-  
   useEffect(() => {
     if (user) history.push("/");
-    // const REACT_APP_apiKey = process.env.REACT_APP_apiKey
-    // debugger
-  }, [user]);
+  }, [user, history]);
 
-  const handleSocialLogin = () => {
-    dispatch(socialLogin());
+  const handleSocialLogin = (provider) => {
+    dispatch(socialLogin(provider));
   };
+
   const handleLocalLogin = (e) => {
     e.preventDefault();
-    dispatch(login({ email, password }));
+    dispatch(login(inputStates));
   };
+
   return (
-    <div className="h-100 d-flex align-items-center justify-content-center">
+    <div className="row justify-content-center">
       {loading && <Loading />}
-      <div className="card d-flex flex-column align-items-center">
+      <div className="card col-sm-5 col-12 ">
         <div className="card-body">
           <h1>Login</h1>
           <form onSubmit={handleLocalLogin}>
             <Input
-              type="text"
+              type="email"
               label="Email"
-              value={email}
-              setValue={setEmail}
+              value={inputStates.email}
+              setValue={(val) =>
+                setInputStates((prev) => ({ ...prev, email: val }))
+              }
               placeholder="E-mail Address"
               required
             />
             <Input
               type="password"
               label="Password"
-              value={password}
-              setValue={setPassword}
+              value={inputStates.password}
+              setValue={(val) =>
+                setInputStates((prev) => ({ ...prev, password: val }))
+              }
               placeholder="Password"
               required
             />
@@ -54,17 +59,22 @@ function Login() {
                 {error}
               </div>
             )}
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-outline-primary w-100">
               Login
             </button>
           </form>
+          <Link className="btn " to="/signup">
+            {" "}
+            Or Register
+          </Link>
           <hr />
-          <button className="btn btn-info" onClick={handleSocialLogin}>
+          <button
+            className="btn btn-outline-warning w-100  "
+            onClick={() => handleSocialLogin("google")}
+          >
             Login with Google
           </button>
-          <div>
-            Don't have an account? <Link to="/signup">Register</Link> now.
-          </div>
+          <PhoneLogin />
         </div>
       </div>
     </div>
